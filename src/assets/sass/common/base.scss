@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+@import "variable.scss";
+@import "mixin.scss";
+
+body,html {
+  line-height: 1;
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: $background;
+  color: $text-black;
+}
+
+

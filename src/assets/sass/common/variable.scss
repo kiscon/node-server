@@ -1,0 +1,42 @@
+@charset "UTF-8";
+// 颜色定义规范
+$color-text : #fff;
+$color-text-b: rgba(0, 0, 0, 1);
+$color-text-d : rgba(255, 255, 255, 0.3);
+$color-text-l : rgba(255, 255, 255, 0.5);
+$color-text-ll : rgba(255, 255, 255, 0.8);
+
+$background : #f8f8f8;
+$background-disabled: #CCDAFB;
+$background-white: #fff;
+$background-blue: #356aeb;
+$background-placeholder: #A7A7A7;
+$background-btn-b1: #CCDAFB;
+
+$text-black: #000;
+$text-black1: #333;
+$text-black2: #666;
+$text-black3: #999;
+$text-black4: #ccc;
+$text-white: #fff;
+$text-grey: #e0e0e0;
+$text-blue: #356AEB;
+$text-success: #4caf50;
+$text-warning: #ffc107;
+$text-error: #f44336;
+
+
+//字体大小, 其中75px是作为适配的基准值用
+$fs12:12px !default;
+$fs13:13px !default;
+$fs14:14px !default;
+$fs16:16px !default;
+$fs18:18px !default;
+$fs20:20px !default;
+$fs26:26px !default;
+$fs28:28px !default;
+$fs32:32px !default;
+$fs34:34px !default;
+$fs75:75px !default;
+
+

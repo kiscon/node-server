@@ -1,0 +1,22 @@
+.shop .shop-info ul {
+  box-sizing: border-box;
+  text-align: left; }
+  .shop .shop-info ul li {
+    display: flex;
+    margin-top: 0.53333rem;
+    padding-top: 0.53333rem;
+    padding-bottom: 0.53333rem;
+    padding-left: 0.37333rem;
+    padding-right: 0.37333rem;
+    font-size: 16px;
+    background-color: #fff;
+    color: #666; }
+    [data-dpr="2"] .shop .shop-info ul li {
+      font-size: 32px; }
+    [data-dpr="3"] .shop .shop-info ul li {
+      font-size: 48px; }
+    .shop .shop-info ul li div {
+      flex: 1;
+      display: block; }
+    .shop .shop-info ul li i {
+      flex: none; }

@@ -1,0 +1,30 @@
+@charset "UTF-8";
+@import '../common/mixin';
+@import "../common/variable";
+
+.shop{
+	.shop-info{
+		ul {
+			box-sizing: border-box;
+			text-align: left;
+			li {
+				display: flex;
+				@include px2rem('margin-top', 40px);
+				@include px2rem('padding-top', 40px);
+				@include px2rem('padding-bottom', 40px);
+				@include px2rem('padding-left', $fs28);
+				@include px2rem('padding-right', $fs28);
+				@include px('font-size', 32px);
+				background-color: #fff;
+				color: $text-black2;
+				div{
+					flex: 1;
+					display:block;
+				}
+				i{
+					flex: none;
+				}
+			}
+		}
+	}
+}

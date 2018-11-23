@@ -1,0 +1,172 @@
+@charset "UTF-8";
+@import './variable';
+// 背景图片
+@mixin bg-image($url){
+  background-image: url('~assets/image/' + $url + "@2x.png");
+  @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3) {
+    background-image: url('~assets/image/' + $url + "@3x.png");
+  }
+}
+
+// 不换行
+@mixin no-wrap(){
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// 扩展点击区域
+@mixin extend-click(){
+  position: relative;
+  &:before{
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+  }
+}
+
+// after伪类箭头-通用 arrow-after(距离顶部,距离右边,颜色)
+@mixin arrow-after($color){
+   &:after{
+     content: "";
+     position: absolute;
+     @include px2rem('top',26px);
+     @include px2rem('right',35px);
+     @include px2rem('width',18px);
+     @include px2rem('height',18px);
+     border-right: 1px solid $color;
+     border-bottom: 1px solid $color;
+     transform: rotate(-45deg);
+   }
+}
+
+@mixin px2rem ($property, $px, $baseline-px: $fs75) {
+  $baseline-rem: $baseline-px / 1rem *1;
+  @if type-of($px) == 'number' {
+    #{$property}: $px / $baseline-rem;
+  }
+  @else {
+    $rem-values: ();
+    @each $value in $px{
+      @if $value == 0 or type-of($value) != 'number'{
+        $rem-values: append($rem-values, $value / $baseline-rem);
+      }
+    }
+    #{$property}: $rem-values;
+  }
+}
+
+// 根据不同手机分辨率动态设置px大小,主要是针对不需要使用rem的场景：font-size、line-height
+@mixin px ($property, $px) {
+  #{$property}: $px / 2;
+
+  [data-dpr="2"] & {
+    #{$property}: $px * 2 / 2;
+  }
+
+  [data-dpr="3"] & {
+    #{$property}: $px * 3 / 2;
+  }
+}
+
+@mixin border-1px($property, $color){
+  position: relative;
+  &:after{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    #{$property}: 1px solid $color;
+    content: ' ';
+  }
+
+}
+
+@mixin border-tb-1px ($property,$direction,$color) {
+  position: relative;
+  &:after{
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    #{$direction}: 0;
+    width: 100%;
+    #{$property}: 1px solid #{$color};
+  }
+}
+
+@mixin setTopBorder($color){
+  position: relative;
+  &:before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid $color;
+    content: ' ';
+  }
+  [data-dpr="1"] &:before {
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+  }
+}
+
+@mixin setBottomBorder($color){
+  position: relative;
+  &:after{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid $color;
+    content: ' ';
+  }
+  [data-dpr="1"] &:after {
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+  }
+}
+
+@mixin setLeftBorder($color){
+  position: relative;
+  &:before{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    border-left: 1px solid $color;
+    content: ' ';
+  }
+  [data-dpr="1"] &:before {
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+  }
+}
+
+@mixin setRightBorder($color){
+  position: relative;
+  &:after{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    border-right: 1px solid $color;
+    content: ' ';
+  }
+  [data-dpr="1"] &:after {
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+  }
+}
+
