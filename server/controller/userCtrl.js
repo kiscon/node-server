@@ -1,6 +1,6 @@
 const md5 = require('blueimp-md5');
 const userModel = require('../model/user');
-const tipConfig = require('../utils/tipConfig');
+const tipConfig = require('../utils/tip-config');
 const utils = require('../utils/utils');
 const config = require('../../config/config');
 

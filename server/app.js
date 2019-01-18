@@ -1,13 +1,15 @@
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-const session = require('express-session');
+// const logger = require('morgan');
+// const session = require('express-session');
 const index = require('./routes/index');
 const indexSve = require('./routes/indexSve');
+const logger = require('./logger/logger');
+const sessionStore = require('./model/session-store');
 let app = express();
 
 // view engine setup
@@ -17,15 +19,17 @@ app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+// app.use(logger('dev'));
+logger(app);
+sessionStore(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-	secret: 'keyboard music', // 相当于是一个加密密钥，值可以是任意字符串
-	resave: false, // 强制session保存到session store中
-	saveUninitialized: false // 强制没有“初始化”的session保存到storage中
-}));
+// app.use(session({
+// 	secret: 'keyboard music', // 相当于是一个加密密钥，值可以是任意字符串
+// 	resave: false, // 强制session保存到session store中
+// 	saveUninitialized: false // 强制没有“初始化”的session保存到storage中
+// }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
