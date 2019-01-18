@@ -1,7 +1,7 @@
-const FileStreamRotator = require('file-stream-rotator'); // 日志切割
-const morgan = require('morgan');
-const fs = require('fs');
-const path = require('path');
+const FileStreamRotator = require('file-stream-rotator') // 日志切割
+const morgan = require('morgan')
+const fs = require('fs')
+const path = require('path')
 // dev 格式
 /*
 * GET / 304 2.887 ms - -
@@ -18,10 +18,10 @@ const logger = (app) => {
 		filename: path.join(logDirectory, 'access-%DATE%.log'),
 		frequency: 'daily',
 		verbose: false
-	});
+	})
 	app.use(morgan('dev', {
 		stream: accessLogStream
-	}));
+	}))
 }
 
-module.exports = logger;
+module.exports = logger

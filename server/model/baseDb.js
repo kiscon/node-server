@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql')
 
 let connection = mysql.createConnection({
 	host: '127.0.0.1',
@@ -8,4 +8,4 @@ let connection = mysql.createConnection({
 	multipleStatements: true // 开启执行多条Sql语句的功能
 });
 
-module.exports = connection;
+module.exports = connection

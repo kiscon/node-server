@@ -1,5 +1,6 @@
-const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
+const config = require('../../config/config')
 
 const sessionStore = (app) => {
   app.use(session({
@@ -13,10 +14,10 @@ const sessionStore = (app) => {
       secure: false // 默认情况下，不设置安全属性
     },
     store : new RedisStore({
-      host: '127.0.0.1',
-      port: 6379,
-      pass: '',
-      db: 1,
+      host: config.redis.host,
+      port: config.redis.port,
+      pass: config.redis.pass,
+      db: config.redis.db,
       // ttl: 1800, // Session的有效期
       logErrors: true
     })
@@ -30,7 +31,7 @@ const sessionStore = (app) => {
 }
 
 
-module.exports = sessionStore;
+module.exports = sessionStore
 
 //
 // app.get('/login', function(req, res, next) {
@@ -40,15 +41,15 @@ module.exports = sessionStore;
 //     age: '22',
 //     address: 'bj'
 //   }
-//   req.session.user = user;
+//   req.session.user = user
 //   res.json('登陆成功')
-// });
+// })
 //
 // app.get('/logOut', function(req, res, next) {
 //   // 从数据库中比对账号验证是否成功，如成功保存用户信息
 //   console.log(req.session)
 //   res.json('退出')
-// });
+// })
 //
 // app.listen(3000, () => {
 //   console.log('http://127.0.0.1:3000')

@@ -41,3 +41,77 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 Navicat for MySQL破解教程
 
 https://blog.csdn.net/weixin_37017560/article/details/78295066
+
+### 4.建表
+
+用户信息 user_info
+
+| 名          | 类型      | 长度 | 说明                        |
+| :---------- | --------- | ---- | --------------------------- |
+| id          | bigint    | 20   |                             |
+| user_name   | varchar   | 32   | utf8mb4、utf8mb4_general_ci |
+| user_code   | varchar   | 32   |                             |
+| mobile      | varchar   | 16   |                             |
+| password    | varchar   | 64   |                             |
+| isdel       | tinyint   | 4    |                             |
+| regist_time | timestamp | 0    |                             |
+
+### 5.关联表
+
+```
+select image_info.*,user_info.user_name from image_info left join user_info on image_info.user_id=user_info.id
+```
+
+## 虚拟机的linux环境配置
+
+### 1.安装nodejs
+
+https://www.cnblogs.com/len0031/p/4975615.html
+
+### 2.安装pm2
+
+npm install -g pm2
+
+### 3.安装Git并生成SSH key
+
+https://blog.csdn.net/u012442401/article/details/48147799
+
+yum install git
+
+ssh-keygen –t rsa
+
+### 4.pm2的文档地址
+
+pm2 init 生成pm2的配置文件，并且更改相应的配置
+
+https://pm2.io/doc/en/runtime/guide/ecosystem-file/
+
+https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/
+
+```javascript
+module.exports = {
+  apps : [{
+    name: 'node-serve',// 项目启动名称
+    script: './server/bin/webapp',// 执行项目下的哪个文件
+    env: {
+      NODE_ENV: 'development'
+    },
+    env_production: {
+      NODE_ENV: 'production'
+    }
+  }],
+
+  deploy : { // 部署
+    production : {
+      user : 'root',
+      host : '192.168.45.128',//服务器远程地址
+      ref  : 'origin/master',//仓库的master分支
+      // repo : 'git@github.com:kiscon/node-serve.git',//仓库地址？
+      repo : 'git@gitee.com:kiscon/node-serve.git',//仓库地址
+      path : '/home/www/nodeserve1',//发布到的地址
+      'post-deploy' : 'git pull && npm install && pm2 reload ecosystem.config.js --env production'
+    }
+  }
+};
+```
+
