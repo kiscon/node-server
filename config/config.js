@@ -12,6 +12,12 @@ const config = {
     port: 6379,
     db: 1,
     pass: ''
+  },
+  mysqpl: {
+    host: '127.0.0.1',
+    user: 'root',
+    password: '123456',
+    database: 'music',
   }
 }
 module.exports = config

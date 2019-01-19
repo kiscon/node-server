@@ -1,10 +1,11 @@
 const mysql = require('mysql')
+const config = require('../../config/config')
 
 let connection = mysql.createConnection({
-	host: '127.0.0.1',
-	user: 'root',
-	password: '123456',
-	database: 'music',
+	host: config.mysqpl.host,
+	user: config.mysqpl.user,
+	password: config.mysqpl.password,
+	database: config.mysqpl.database,
 	multipleStatements: true // 开启执行多条Sql语句的功能
 });
 
