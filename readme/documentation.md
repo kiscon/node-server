@@ -58,6 +58,8 @@ https://blog.csdn.net/weixin_37017560/article/details/78295066
 
 ### 5.关联表
 
+- left join 会以左侧表中的数据为准，会把左侧表中的所有数据否查询出来，然后根据on条件指定关联关系，去右侧表中，根据关联关系查找指定的数据，如果能找到，则把指定的数据显示出来，如果找不到，则显示null
+
 ```
 select image_info.*,user_info.user_name from image_info left join user_info on image_info.user_id=user_info.id
 ```
