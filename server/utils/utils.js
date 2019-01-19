@@ -1,4 +1,4 @@
-
+const moment = require('moment')
 // 去除首尾全部空格
 const trim = (string) => {
 	return existy(string) ? string.replace(/^\s+|\s+$/ig, '') : ''
@@ -58,13 +58,38 @@ const hyphenToHump = (val) => {
 	if (typeof val !== 'string') return val;
 	return val.replace(/_(\w)/g, function ($0, $1) {
 		return $1.toUpperCase();
-	});
+	})
 }
 
 // 随机产生一个唯一的ID
 const guid = () => {
 	return Number(Math.random().toString().slice(-3) + (new Date().getTime()).toString());
 }
+
+const date = (date, fmt = 'YYYY-MM-DD') => {
+  let str = ''
+  if (date) {
+    str = moment(date).format(fmt)
+  }
+  return str
+}
+
+const time = (d, fmt = 'YYYY-MM-DD HH:mm:ss') => {
+  return date(d, fmt)
+}
+
+const minute = (d, fmt = 'YYYY-MM-DD HH:mm') => {
+  return date(d, fmt)
+}
+
+const second = (d, fmt = 'HH:mm:ss') => {
+  return date(d, fmt)
+}
+
+const month = (d, fmt = 'YYYY-MM') => {
+  return date(d, fmt)
+}
+
 
 let utils = {
 	trim,
@@ -74,7 +99,12 @@ let utils = {
 	nameTransformToStart,
 	humpToHyphen,
 	hyphenToHump,
-	guid
+	guid,
+  date,
+  time,
+  minute,
+  second,
+  month
 }
 
-module.exports = utils;
+module.exports = utils

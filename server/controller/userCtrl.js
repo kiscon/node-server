@@ -45,7 +45,7 @@ const userCtrl = {
 			user_code: form.userCode,
 			mobile: form.mobile,
 			password: md5(form.password, config.pwdSalt),
-			regist_time: utils.formatDate({timestamp: Date.now()}),
+			regist_time: utils.time(Date.now()),
 			login_time: null,
 			del_time: null
 		}
@@ -89,7 +89,7 @@ const userCtrl = {
 		let params = {
 			user_code: form.userCode,
 			password: md5(form.password, config.pwdSalt),
-			login_time: utils.formatDate({timestamp: Date.now()})
+			login_time: utils.time(Date.now())
 		}
 		// 获取用户信息
 		userModel.getUserByUserCodeAndPwd(params, (error, results) => {
@@ -154,7 +154,7 @@ const userCtrl = {
 			user_code: form.userCode,
 			password: md5(form.password, config.pwdSalt),
 			isdel: form.isdel,
-			del_time: utils.formatDate({timestamp: Date.now()})
+			del_time: utils.time(Date.now())
 		}
 		// 获取用户信息
 		userModel.getUserByUserCodeAndPwd(params, (error, results) => {
