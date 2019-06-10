@@ -1,19 +1,11 @@
 {
-  "name": "react-web",
+  "name": "server",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build-css": "node-sass-chokidar src/assets/sass -o src/assets/css",
-    "watch-css": "npm run build-css && node-sass-chokidar src/assets/sass -o src/assets/css --watch --recursive",
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
-    "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "./bin/music"
   },
   "dependencies": {
-    "antd": "^3.5.1",
     "blueimp-md5": "^2.10.0",
     "connect-redis": "^3.4.0",
     "cookie-parser": "^1.4.3",
@@ -24,20 +16,13 @@
     "file-stream-rotator": "^0.4.1",
     "morgan": "^1.9.0",
     "mysql": "^2.16.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-responsive": "^4.1.0",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4",
     "request": "^2.87.0",
     "serve-favicon": "^2.5.0",
     "superagent": "^3.8.3"
   },
   "devDependencies": {
     "autoprefixer": "^8.5.2",
-    "node-sass-chokidar": "^1.3.0",
-    "npm-run-all": "^4.1.3"
+    "node-sass-chokidar": "^1.3.0"
   },
   "proxy": {
     "/api": {
