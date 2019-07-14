@@ -1,6 +1,7 @@
 {
   "name": "node-server",
   "version": "0.1.1",
+  "author": "kiscon",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon ./server/bin/www",

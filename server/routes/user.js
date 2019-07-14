@@ -8,6 +8,6 @@ router
 	.post('/add', user.addUser) // 新增用户
 	.post('/login', user.loginUser) // 用户登录
 	.post('/logOut', user.logOut) // 退出登录
-	.post('/cancellation', user.cancellationUser) // 注销用户
+	.post('/cancellation', loinCheck, user.cancellationUser) // 注销用户
 
 module.exports = router
