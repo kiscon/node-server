@@ -4,7 +4,7 @@ const utils = require('../utils/utils')
 const config = require('../../config/config')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 const { genPassword } = require('../utils/cryp')
-
+const { escape } = require('../db/mysql')
 
 const userCtrl = {
 	getAllUsers: (req, res) => {
@@ -74,8 +74,8 @@ const userCtrl = {
 	loginUser: (req, res) => {
 		let form = req.body
 		let params = {
-			user_code: form.userCode,
-			password: genPassword(form.password),
+			user_code: escape(form.userCode),
+			password: escape(genPassword(form.password)),
 			rememberPassword: form.rememberPassword || 0,
 			login_time: utils.time(Date.now())
 		}
@@ -89,7 +89,7 @@ const userCtrl = {
 				return
 			}
 			let userInfo = data[0]
-			
+
 			// 用户账号登录
 			let result = userModel.loginUser(params)
 			result.then(dat => {
@@ -124,8 +124,8 @@ const userCtrl = {
 	cancellationUser: (req, res) => {
 		let form = req.body
 		let params = {
-			user_code: form.userCode,
-			password: genPassword(form.password),
+			user_code: escape(form.userCode),
+			password: escape(genPassword(form.password)),
 			isdel: form.isdel,
 			del_time: utils.time(Date.now())
 		}
