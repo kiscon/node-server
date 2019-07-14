@@ -4,15 +4,15 @@
  * Module dependencies.
  */
 
-let app = require('../app')
-let debug = require('debug')('server:server')
-let http = require('http')
-let config = require('../../config/config')
+const app = require('../app')
+const debug = require('debug')('blog-express:server')
+const http = require('http')
+
 /**
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || config.port)
+let port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
 
 /**
@@ -28,7 +28,6 @@ let server = http.createServer(app)
 server.listen(port)
 server.on('error', onError)
 server.on('listening', onListening)
-console.log('Express server listening on %d, in %s mode', port, app.get('env'))
 
 /**
  * Normalize a port into a number, string, or false.

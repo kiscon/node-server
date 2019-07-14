@@ -1,16 +1,14 @@
 /*
 * 功能：统一注册自定义路由
 * */
-const productSve = require('./productSve')
-const movieSve = require('./movieSve')
-const userSve = require('./userSve')
-const imageSve = require('./imageSve')
+const product = require('./product')
+const user = require('./user')
+const image = require('./image')
 
-const indexSve = (app) => {
-	app.use('/api/productSve', productSve)
-	app.use('/movieSve', movieSve)
-	app.use('/api/userSve', userSve)
-	app.use('/api/imageSve', imageSve)
+const indexSve = app => {
+	app.use('/api/product', product)
+	app.use('/api/user', user)
+	app.use('/api/image', image)
 }
 
 module.exports = indexSve

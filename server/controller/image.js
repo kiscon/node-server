@@ -2,7 +2,7 @@
 // const	moment = require('moment')
 const	fs = require('fs')
 const imageModel = require('../model/image')
-const tipConfig = require('../utils/tip-config')
+const tipConfig = require('../utils/tipConfig')
 const utils = require('../utils/utils')
 
 const imageCtrl = {

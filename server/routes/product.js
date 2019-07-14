@@ -1,8 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const request = require('request')
-const config = require('../../config/config')
-
 
 function Product(id, title, price, rating, desc, categories) {
   this.id = id
@@ -88,9 +85,6 @@ router.get('/product/:id/comments', function (req, res) {
 
   res.json(results)
 })
-
-
-
 
 
 module.exports = router

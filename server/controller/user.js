@@ -1,31 +1,18 @@
-const md5 = require('blueimp-md5')
 const userModel = require('../model/user')
-const tipConfig = require('../utils/tip-config')
+const tipConfig = require('../utils/tipConfig')
 const utils = require('../utils/utils')
 const config = require('../../config/config')
+const { SuccessModel, ErrorModel } = require('../model/resModel')
+const { genPassword } = require('../utils/cryp')
+
 
 const userCtrl = {
 	getAllUsers: (req, res) => {
 		let params = req.body
-		userModel.getAllUsers((error, results) => {
-			try {
-				tipConfig.$log({title: '获取用户信息列表', error, results, params})
-				if (!error) {
-					res.send({
-						code: tipConfig.RES_OK,
-						msg: tipConfig.ok_Txt,
-						data: results
-					})
-				} else {
-					res.send({
-						code: tipConfig.RES_Err,
-						msg: tipConfig.err_Txt,
-						data: null
-					})
-				}
-			} catch(e) {
-				console.log('代码执行出错：',e)
-			}
+		const result = 	userModel.getAllUsers(params)
+		return result.then(data => {
+			tipConfig.$log({title: '获取用户信息列表', result: data, params})
+			res.json(new SuccessModel(data))
 		})
 	},
 	addUser: (req, res) => {
@@ -44,7 +31,7 @@ const userCtrl = {
 			user_name: form.userName,
 			user_code: form.userCode,
 			mobile: form.mobile,
-			password: md5(form.password, config.pwdSalt),
+			password: genPassword(form.password),
 			regist_time: utils.time(Date.now()),
 			login_time: null,
 			del_time: null
@@ -88,62 +75,48 @@ const userCtrl = {
 		let form = req.body
 		let params = {
 			user_code: form.userCode,
-			password: md5(form.password, config.pwdSalt),
+			password: genPassword(form.password),
+			rememberPassword: form.rememberPassword || 0,
 			login_time: utils.time(Date.now())
 		}
 		// 获取用户信息
-		userModel.getUserByUserCodeAndPwd(params, (error, results) => {
-			// 如果发生错误，则直接返回结果
-			if (error) {
-				res.send({ code: tipConfig.RES_Err, msg: '登录失败，请稍后再试！', data: null})
-				return
-			}
+		let results = userModel.getUserByUserCodeAndPwd(params)
+		results.then(data => {
 			// 判断用户是否存在
-			if (!results.length) {
-				res.send({ code: 14878, msg: tipConfig.userErr_Txt, data: null})
+			
+			if (!data.length) {
+				res.json({ code: 14878, msg: tipConfig.userErr_Txt, data: null})
 				return
 			}
+			let userInfo = data[0]
+			
 			// 用户账号登录
-			userModel.loginUser(params, (error, result) => {
-				try {
-					tipConfig.$log({title: '用户登录', error, result, params})
-					if (!error) {
-						// 记住用户名
-						if (parseInt(form.rememberPassword) === 1) {
-							res.cookie('mc_lu', form.userCode, { expires: new Date(Date.now() + 3600000 * 24 * 7), httpOnly: false })
-							res.cookie('mc_lp', form.password, { expires: new Date(Date.now() + 3600000 * 24 * 7), httpOnly: false })
-						} else if (parseInt(form.rememberPassword) === 0) { // 不记住密码
-							res.cookie('mc_lu', '', { expires: new Date(Date.now()), httpOnly: false })
-							res.cookie('mc_lp', '', { expires: new Date(Date.now()), httpOnly: false })
-						}
-						// 保存登录信息
-						req.session.accountInfo = {
-							userInfo: results[0],
-							islogin: true,
-							// token: userInfo.token,
-						}
-						res.send({
-							code: tipConfig.RES_OK,
-							msg: tipConfig.ok_Txt,
-							data: null
-						})
-					} else {
-						res.send({
-							code: tipConfig.RES_Err,
-							msg: error.sqlMessage ? tipConfig.paramsErr_Txt : tipConfig.err_Txt,
-							data: null
-						})
-					}
-				} catch(e) {
-					console.log('代码执行出错：',e)
+			let result = userModel.loginUser(params)
+			result.then(dat => {
+				console.log(dat)
+				tipConfig.$log({title: '用户登录', result: dat, params})
+				// 记住用户名
+				if (parseInt(form.rememberPassword) === 1) {
+					res.cookie('mc_lu', form.userCode, { expires: new Date(Date.now() + 3600000 * 24 * 7), httpOnly: true })
+					res.cookie('mc_lp', form.password, { expires: new Date(Date.now() + 3600000 * 24 * 7), httpOnly: true })
+				} else if (parseInt(form.rememberPassword) === 0) { // 不记住密码
+					res.cookie('mc_lu', '', { expires: new Date(Date.now()), httpOnly: true })
+					res.cookie('mc_lp', '', { expires: new Date(Date.now()), httpOnly: true })
 				}
+				// 保存登录信息
+				req.session.accountInfo = {
+					userInfo,
+					islogin: true,
+					// token: userInfo.token,
+				}
+				res.json(new SuccessModel(userInfo))
 			})
 		})
 	},
 	logOut: (req, res) => {
 		// req.session.accountInfo = null
 		// 通过destroy()方法清空session数据
-		req.session.destroy(function(err){
+		req.session.destroy(err => {
 			if(err) throw err
 			res.redirect('/login')
 		})
@@ -152,7 +125,7 @@ const userCtrl = {
 		let form = req.body
 		let params = {
 			user_code: form.userCode,
-			password: md5(form.password, config.pwdSalt),
+			password: genPassword(form.password),
 			isdel: form.isdel,
 			del_time: utils.time(Date.now())
 		}

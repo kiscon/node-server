@@ -8,11 +8,11 @@ const tipConfig = {
 	userErr_Txt: '找不到用户信息！',
 	paramsErr_Txt: '参数错误！',
 	$log: (options) => {
-		console.log(`${options.title}-参数：`, options.params || {});
-		console.log(`${options.title}-错误：`, options.error || null);
-		console.log(`${options.title}-结果：`, JSON.stringify(options.results) || null);
+		console.log(`${options.title}-参数：`, options.params || {})
+		console.log(`${options.title}-错误：`, options.error || null)
+		console.log(`${options.title}-结果：`, JSON.stringify(options.result) || null)
 	}
 }
 
-module.exports = tipConfig;
+module.exports = tipConfig
 
