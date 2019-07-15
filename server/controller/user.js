@@ -1,7 +1,6 @@
 const userModel = require('../model/user')
-const tipConfig = require('../utils/tipConfig')
+const tipInfo = require('../utils/tipConfig')
 const utils = require('../utils/utils')
-const config = require('../../config/config')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 const { genPassword } = require('../utils/cryp')
 const { escape } = require('../db/mysql')
@@ -11,7 +10,7 @@ const userCtrl = {
 		let params = req.body
 		const result = 	userModel.getAllUsers(params)
 		return result.then(data => {
-			tipConfig.$log({title: '获取用户信息列表', result: data, params})
+			tipInfo.$log({title: '获取用户信息列表', result: data, params})
 			res.json(new SuccessModel(data))
 		})
 	},
@@ -46,8 +45,8 @@ const userCtrl = {
 			}
 			let result = userModel.addUserInfo(params)
 			result.then(dat => {
-				tipConfig.$log({title: '新增用户', result: dat, params})
-				res.json(new SuccessModel('OK'))
+				tipInfo.$log({title: '新增用户', result: dat, params})
+				res.json(new SuccessModel(tipInfo.ok_Txt))
 			})
 		}).catch(() => {
 			res.json(new ErrorModel('用户注册失败，请稍后再试！'))
@@ -66,7 +65,7 @@ const userCtrl = {
 		results.then(data => {
 			// 判断用户是否存在
 			if (!data.length) {
-				res.json({ code: 14878, msg: tipConfig.userErr_Txt, data: null})
+				res.json({ code: 14878, msg: tipInfo.userErr_Txt, data: null})
 				return
 			}
 			let userInfo = data[0]
@@ -75,7 +74,7 @@ const userCtrl = {
 			let result = userModel.loginUser(params)
 			result.then(dat => {
 				console.log(dat)
-				tipConfig.$log({title: '用户登录', result: dat, params})
+				tipInfo.$log({title: '用户登录', result: dat, params})
 				// 记住用户名
 				if (parseInt(form.rememberPassword) === 1) {
 					res.cookie('mc_lu', form.userCode, { expires: new Date(Date.now() + 3600000 * 24 * 7), httpOnly: true })
@@ -95,13 +94,11 @@ const userCtrl = {
 		})
 	},
 	logOut: (req, res) => {
-		// req.session.accountInfo = null
 		// 通过destroy()方法清空session数据
 		if (!req.session) return
 		req.session.destroy(err => {
 			if(err) throw err
-			console.log('退出登录')
-			// res.redirect('/login')
+			res.json(new SuccessModel(tipInfo.ok_Txt))
 		})
 	},
 	cancellationUser: (req, res) => {
@@ -109,43 +106,25 @@ const userCtrl = {
 		let params = {
 			user_code: escape(form.userCode),
 			password: escape(genPassword(form.password)),
-			isdel: form.isdel,
+			isdel: 1,
 			del_time: utils.time(Date.now())
 		}
 		// 获取用户信息
-		userModel.getUserByUserCodeAndPwd(params, (error, results) => {
-			// 如果发生错误，则直接返回结果
-			if (error) {
-				res.send({ code: tipConfig.RES_Err, msg: '注销失败，请稍后再试！', data: null})
-				return
-			}
+		let results = userModel.getUserByUserCodeAndPwd(params)
+		results.then(data => {
+			console.log(data)
 			// 判断用户是否存在
-			if (!results.length) {
-				res.send({ code: 14878, msg: tipConfig.userErr_Txt, data: null})
+			if (!data.length) {
+				res.json({ code: 14878, msg: tipInfo.userErr_Txt, data: null})
 				return
 			}
 			// 用户账号注销
 			// 数据软删除，通过给表添加isdel字段，来标识数据记录是否被删除，1表示被删除，0表示未删除
 			// 数据软删除的好处：能最大限度地保留数据的原始性
-			userModel.cancellationUser(params, (error, results) => {
-				try {
-					tipConfig.$log({title: '用户注销', error, results, params})
-					if (!error) {
-						res.send({
-							code: tipConfig.RES_OK,
-							msg: tipConfig.ok_Txt,
-							data: null
-						})
-					} else {
-						res.send({
-							code: tipConfig.RES_Err,
-							msg: error.sqlMessage ? tipConfig.paramsErr_Txt : tipConfig.err_Txt,
-							data: null
-						})
-					}
-				} catch(e) {
-					console.log('代码执行出错：',e)
-				}
+			let result = userModel.cancellationUser(params)
+			result.then(dat => {
+				tipInfo.$log({title: '用户注销', result: dat, params})
+				res.json(new SuccessModel(tipInfo.ok_Txt))
 			})
 		})
 	}

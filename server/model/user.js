@@ -36,16 +36,12 @@ const user = {
 		})
 	},
 	cancellationUser(params) {
-		let sql = `update user_info set isdel=? , del_time=? where user_code=?`
-		let opts = [params.isdel, params.del_time, params.user_code]
-		return exec(sql, opts).then(row => {
+		// let sql = `update user_info set isdel=? , del_time=? where user_code=?`
+		// let opts = [params.isdel, params.del_time, params.user_code]
+		let sql = `update user_info set isdel=1 , del_time='${params.del_time}' where user_code=${params.user_code}`
+		return exec(sql).then(row => {
 			return row || {}
 		})
-		// let sqlStr = `update user_info set isdel=? , del_time=? where user_code=?`
-		// baseDb.query(sqlStr, [params.isdel, params.del_time, params.user_code], (err, results) => {
-		// 	if (err) return cb(err)
-		// 	cb(null, results)
-		// })
 	}
 }
 
