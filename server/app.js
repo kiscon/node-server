@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const index = require('./routes/index')
 const indexSve = require('./routes/indexSve')
-const logger = require('./logger/logger')
+const logger = require('./middleware/logger')
 const sessionStore = require('./middleware/sessionStore')
 const app = express()
 

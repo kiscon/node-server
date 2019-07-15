@@ -18,10 +18,10 @@ const userCtrl = {
 	addUser: (req, res) => {
 		let form = req.body
 		if (!form.userCode) {
-			res.send({ code: tipConfig.RES_Err, msg: '账号不能为空', data: null})
+			res.json(new ErrorModel('账号不能为空'))
 		}
 		if (!form.password) {
-			res.send({ code: tipConfig.RES_Err, msg: '密码不能为空', data: null})
+			res.json(new ErrorModel('密码不能为空'))
 		}
 		// 用户注册参数
 		let id = utils.guid()
@@ -37,38 +37,20 @@ const userCtrl = {
 			del_time: null
 		}
 		// 获取指定的用户信息
-		userModel.getSelectUser(params,(error, results) => {
-			// 如果发生错误，则直接返回结果
-			if (error) {
-				res.send({ code: tipConfig.RES_Err, msg: '用户注册失败，请稍后再试！', data: null})
-				return
-			}
+		let results = userModel.getSelectUser(params)
+		results.then(data => {
 			// 判断用户是否存在
-			if (results.length) {
-				res.send({ code: tipConfig.RES_Err, msg: '账号已存在！', data: null})
+			if (data.length) {
+				res.json(new ErrorModel('账号已存在！'))
 				return
 			}
-			// 用户账号不存在就新增
-			userModel.addUserInfo(params, (error, result) => {
-				try {
-					tipConfig.$log({title: '新增用户', error, result, params})
-					if (!error) {
-						res.send({
-							code: tipConfig.RES_OK,
-							msg: tipConfig.ok_Txt,
-							data: null
-						})
-					} else {
-						res.send({
-							code: tipConfig.RES_Err,
-							msg: error.sqlMessage ? tipConfig.paramsErr_Txt : tipConfig.err_Txt,
-							data: null
-						})
-					}
-				} catch(e) {
-					console.log('代码执行出错：',e)
-				}
+			let result = userModel.addUserInfo(params)
+			result.then(dat => {
+				tipConfig.$log({title: '新增用户', result: dat, params})
+				res.json(new SuccessModel('OK'))
 			})
+		}).catch(() => {
+			res.json(new ErrorModel('用户注册失败，请稍后再试！'))
 		})
 	},
 	loginUser: (req, res) => {
@@ -83,7 +65,6 @@ const userCtrl = {
 		let results = userModel.getUserByUserCodeAndPwd(params)
 		results.then(data => {
 			// 判断用户是否存在
-			
 			if (!data.length) {
 				res.json({ code: 14878, msg: tipConfig.userErr_Txt, data: null})
 				return
@@ -116,9 +97,11 @@ const userCtrl = {
 	logOut: (req, res) => {
 		// req.session.accountInfo = null
 		// 通过destroy()方法清空session数据
+		if (!req.session) return
 		req.session.destroy(err => {
 			if(err) throw err
-			res.redirect('/login')
+			console.log('退出登录')
+			// res.redirect('/login')
 		})
 	},
 	cancellationUser: (req, res) => {

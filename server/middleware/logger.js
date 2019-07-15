@@ -24,7 +24,7 @@ const FileStreamRotator = require('file-stream-rotator')
 const logger = app => {
 	const ENV = process.env.NODE_ENV
 	if (ENV !== 'prod') {
-		app.use(logger('dev'))
+		app.use(morgan('dev'))
 	} else {
 		const logDirectory = path.join(__dirname, '..',  'logs')
 		// ensure log directory exists

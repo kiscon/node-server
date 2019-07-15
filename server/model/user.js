@@ -22,16 +22,16 @@ const user = {
 		})
 	},
 	getUserByUserCodeAndPwd(params) {
-		let sql = 'select * from user_info where user_code=? and password=? and isdel=?'
-		let opts = [params.user_code, params.password, 0]
-		return exec(sql, opts).then(rows => {
+		// let sql = 'select * from user_info where user_code=? and password=? and isdel=?'
+		// let opts = [params.user_code, params.password, 0]
+		let sql = `select * from user_info where user_code=${params.user_code} and password=${params.password} and isdel=0`
+		return exec(sql).then(rows => {
 			return rows || []
 		})
 	},
 	loginUser(params) {
-		let sql = 'update user_info set login_time=? where user_code=?'
-		let opts = [params.login_time, params.user_code]
-		return exec(sql, opts).then(row => {
+		let sql = `update user_info set login_time='${params.login_time}' where user_code=${params.user_code}`
+		return exec(sql).then(row => {
 			return row || {}
 		})
 	},
