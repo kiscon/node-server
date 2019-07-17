@@ -1,4 +1,5 @@
 const moment = require('moment')
+
 // 去除首尾全部空格
 const trim = (string) => {
 	return existy(string) ? string.replace(/^\s+|\s+$/ig, '') : ''
@@ -49,21 +50,21 @@ const nameTransformToStart = (value) => {
 
 // 驼峰转连字符
 const humpToHyphen = (val) => {
-	if (typeof val !== 'string') return val;
-	return val.replace(/([A-Z])/g, '_$1').toLowerCase();
+	if (typeof val !== 'string') return val
+	return val.replace(/([A-Z])/g, '_$1').toLowerCase()
 }
 
 // 连字符转驼峰
 const hyphenToHump = (val) => {
-	if (typeof val !== 'string') return val;
+	if (typeof val !== 'string') return val
 	return val.replace(/_(\w)/g, function ($0, $1) {
-		return $1.toUpperCase();
+		return $1.toUpperCase()
 	})
 }
 
 // 随机产生一个唯一的ID
 const guid = () => {
-	return Number(Math.random().toString().slice(-3) + (new Date().getTime()).toString());
+	return Number(Math.random().toString().slice(-3) + (new Date().getTime()).toString())
 }
 
 const date = (date, fmt = 'YYYY-MM-DD') => {
@@ -90,8 +91,14 @@ const month = (d, fmt = 'YYYY-MM') => {
   return date(d, fmt)
 }
 
+const getUserInfo = req => {
+	if (req.session && req.session.accountInfo && req.session.accountInfo.isLogin) {
+		return req.session.accountInfo.userInfo
+	}
+	return false
+}
 
-let utils = {
+const utils = {
 	trim,
 	toFixed,
 	formatDate,
@@ -104,7 +111,8 @@ let utils = {
   time,
   minute,
   second,
-  month
+	month,
+	getUserInfo
 }
 
 module.exports = utils

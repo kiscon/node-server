@@ -1,17 +1,15 @@
-const baseDb = require('./baseDb.js')
+const { exec } = require('../db/mysql')
 const user = {
-	getAllImgs(cb) {
-		let sqlStr = 'select * from image_info order by id asc'
-		baseDb.query(sqlStr, (err, results) => {
-			if (err) return cb(err)
-			cb(null, results)
+	getAllImgs() {
+		let sql = 'select * from image_info order by id asc'
+		return exec(sql).then(rows => {
+			return rows || []
 		})
 	},
-	addImgInfo(params, cb) {
-		let sqlStr = 'insert into image_info set ?'
-		baseDb.query(sqlStr, params, (err, results) => {
-			if (err) return cb(err)
-			cb(null, results)
+	addImgInfo(params) {
+		let sql = 'insert into image_info set ?'
+		return exec(sql, params).then(rows => {
+			return rows || []
 		})
 	}
 }
