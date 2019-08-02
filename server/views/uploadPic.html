@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+  <input id="uploadPic" type="file" value="上传图片">
+  <img id="img" src="" alt=""/>
+  <script>
+    let uploadPic = document.querySelector('#uploadPic')
+    uploadPic.addEventListener('change', e => {
+      let file = e.target.files[0]
+      console.log(file)
+      let fd = new FormData()
+      fd.append('file', file)
+
+      renderImg(file)
+      
+      $.ajax({
+        url: 'http://127.0.0.1:3000/api/image/uploadPic',
+        data: fd,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        type: 'POST'
+      }).done(result => {
+        console.log(result)
+      }).fail( err => {
+        console.log(err)
+      })
+    })
+      
+    function renderImg(file) {
+      let reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        document.querySelector('#img').src = reader.result
+      }
+    }
+    
+  </script>
+</body>
+</html>
