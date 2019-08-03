@@ -6,6 +6,7 @@ const index = require('./routes/index')
 const indexSve = require('./routes/indexSve')
 const logger = require('./middleware/logger')
 const sessionStore = require('./middleware/sessionStore')
+const socket = require('./model/socket')
 const app = express()
 
 // view engine setup
@@ -19,6 +20,7 @@ const app = express()
 
 logger(app)
 sessionStore(app)
+socket(app)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())

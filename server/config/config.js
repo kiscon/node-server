@@ -32,7 +32,7 @@ const config = {
 		pass: ''
 	},
 	uploadImg: {
-    'local_base_url': 'E:/testdemo/music-server/server/image', //需要自己手动在项目目录下创建
+    'local_base_url': 'E:/testdemo/node-server/server/image', //需要自己手动在项目目录下创建
   }
 }
 module.exports = config

@@ -1,12 +1,11 @@
+const http = require('http')
 const WebSocket = require('ws')
 const escapeGoat = require('escape-goat')
-const http = require('http')
 const moment = require('moment')
 
 // https://github.com/websockets/ws
 
 let count = 0
-
 const socket = (app) => {
   const baseServer = http.createServer(app)
   const wss = new WebSocket.Server({
@@ -23,7 +22,7 @@ const socket = (app) => {
     let msgInfo = {
       type: _type,
       name: name,
-      msg: escapeGoat.escape(msg), // 防止XSS注入攻击
+      msg: escapeGoat.htmlEscape(msg), // 防止XSS注入攻击
       time: moment().format('YYYY-MM-DD HH:mm:ss'),
       count: count
     }
@@ -49,6 +48,11 @@ const socket = (app) => {
       wss.broadcast('系统消息',ws.ip +'已经离开聊天室',2)
     })
   })
+
+  baseServer.listen(8080, () => {
+    console.log('http://127.0.0.1:8080')
+  })
 }
+
 
 module.exports = socket

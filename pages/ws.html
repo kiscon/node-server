@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>聊天室</title>
+  <style>
+    .form{
+      margin: 20px;
+    }
+    .item{
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+    .info-w{
+      width: 300px;
+      height: 300px;
+      overflow: auto;
+      background: #e5eecc;
+    }
+    label{
+      float: left;
+    }
+    input,textarea{
+      width: 80%;
+    }
+    button{
+      padding: 5px;
+      border: none;
+      border-radius: 2px;
+      font-size: 14px;
+      color: #fff;
+      background: #358af2;
+      cursor: pointer;
+    }
+    ul{
+      list-style: none;
+    }
+    li{
+      padding: 2px;
+    }
+    p{
+      margin: 0;
+      padding: 2px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <ul class="info-w">
+    <li v-for="(item, index) in list" :key="index">
+      <p>{{item.time}}</p>
+      <p>{{item.name}}>>{{item.msg}}</p>
+    </li>
+  </ul>
+  <div class="form">
+    <div class="item">
+      <label for="name">昵称：</label>
+      <input type="text" name="name" id="name" v-model="nickname">
+    </div>
+    <div class="item">
+      <label for="name"> 消息：</label>
+      <textarea rows="10" name="content" id="msg" v-model="msg"></textarea>
+    </div>
+    <div class="item">
+      <button id="btn-send" @click="sendMsg">发送消息</button>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      ws: null,
+      nickname: '',
+      msg: '',
+      list: []
+    },
+    mounted() {
+      this.createWs()
+    },
+    methods: {
+      createWs() {
+        let ws = null
+        if (!('WebSocket' in window)) {
+          alert('您的浏览器不支持 WebSocket!')
+          return
+        }
+        ws = new WebSocket('ws://localhost:8080')
+        this.ws = ws
+        ws.onopen = () => {
+          // Web Socket 已连接上，使用 send() 方法发送数据
+          console.log('数据发送中...')
+        }
+        ws.onmessage = e => {
+          let received_msg = e.data
+          console.log(received_msg)
+          this.list.push(JSON.parse(received_msg))
+          console.log('数据已接收...')
+        }
+        ws.onclose = () => {
+          console.log('连接已关闭...')
+        }
+      },
+      sendMsg() {
+        let name = this.nickname.trim()
+        let msg = this.msg.trim()
+        if (name.length <=0 || msg.length <=0 ) {
+          return
+        }
+        this.ws.send(JSON.stringify({
+          name: name,
+          msg: msg
+        }))
+        this.nickname = ''
+        this.msg = ''
+      }
+    }
+  })
+</script>
+</body>
+</html>
