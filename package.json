@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon ./server/bin/www",
     "prod": "cross-env NODE_ENV=prod nodemon ./server/bin/www",
-    "start": "node ./server/bin/www"
+    "start": "node ./server/bin/www",
+    "readline": "node ./server/utils/readline.js"
   },
   "dependencies": {
     "connect-redis": "^3.4.1",

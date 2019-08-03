@@ -38,7 +38,7 @@ const imageCtrl = {
 		form.encoding = 'utf-8' //设置编辑
 		//产生上传目录
 		let fileUploadDir = moment().format('YYYYMMDD')
-		let uploadPath = `${config.uploadImg.local_base_url}${fileUploadDir}` // 本地路径
+		let uploadPath = `${config.uploadImg.local_base_url}/${fileUploadDir}` // 本地路径
 		if (!fs.existsSync(uploadPath)) {
 			fs.mkdirSync(uploadPath)
 		}

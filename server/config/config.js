@@ -5,7 +5,7 @@ const config = {
   request_url: {
     base_api_url: '',
   },
-	pwdSalt: '这是一个盐`~-=）（*&%★', // 加密的盐
+	pwdSalt: '加密的盐`~-=*&%★',
   port: 4222,
   dev_mysqpl: {
     host: '127.0.0.1',
