@@ -91,9 +91,9 @@ const month = (d, fmt = 'YYYY-MM') => {
   return date(d, fmt)
 }
 
-const getUserInfo = ctx => {
-	if (ctx.session && ctx.session.accountInfo && ctx.session.accountInfo.isLogin) {
-		return ctx.session.accountInfo.userInfo
+const getUserInfo = req => {
+	if (req.session && req.session.accountInfo && req.session.accountInfo.isLogin) {
+		return req.session.accountInfo.userInfo
 	}
 	return false
 }
